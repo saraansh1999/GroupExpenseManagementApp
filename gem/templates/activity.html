@@ -1,0 +1,14 @@
+{% extends "base3.html" %}
+{% block content %}
+<br><br><br>
+<h1 class="text-center"> Activities </h1>
+<div class="container-fluid">
+	<table class="table table-striped">
+		{% for i in a %}
+		<tr>
+			<td> {{i.activity}} </td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

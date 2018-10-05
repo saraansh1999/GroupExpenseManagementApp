@@ -1,0 +1,60 @@
+{% extends "base3.html" %}
+
+{% block content %}
+<br><br><br>
+<h1 class="text-center"> {{a.name}} </h1>
+<h1 class="text-center"> {{a.description}} </h1>
+<div class="container-fluid">
+	<a href="{{url_for('group_transaction_create',username=current_user.username,idgrp=a.id)}}">+	</a>
+	<h2>Group Members</h2>
+	<table class="table table-striped">
+		<tr>
+			<th>Name</th>
+			<th>Username</th>
+			<th>Email ID</th>
+			<th>Phone No.</th>
+		</tr>
+		{% for i in b %}
+		<tr>
+			<td> {{i.name}} </td>
+			<td> {{i.username}} </td>
+			<td> {{i.email}} </td>
+			<td> {{i.pno}} </td>
+		</tr>
+		{% endfor %}
+
+	</table>
+
+	<h2>Group Transactions</h2>
+	<table class="table table-striped">
+		<tr>
+			<th>Transaction</th>
+			<th>Timestamp</th>
+			<th>Added By</th>
+		</tr>
+		{% for i in z %}
+		{% set ns = namespace(val = 0) %}
+		{% for j in i.neededtrans.all() %}
+		{% if user.username == j.giver.username or user.username == j.receiver.username %}
+		{% set ns.val = 1 %}
+		{% endif %}
+		{% endfor %}
+		{% if ns.val==1 %}
+		<tr class="table-info" data-grpurl="{{url_for('disp_trans',username=user.username,id=i.id,grpid=i.grp)}}">
+			<td> {{i.desc}} </td>
+			<td> {{i.timestamp}} </td>
+			<td> {{i.added_by}} </td>
+		</tr>
+		{% else %}
+		<tr data-grpurl="{{url_for('disp_trans',username=user.username,id=i.id,grpid=i.grp)}}">
+			<td> {{i.desc}} </td>
+			<td> {{i.timestamp}} </td>
+			<td> {{i.added_by}} </td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+		
+	</table> 
+
+</div>
+{% endblock %}

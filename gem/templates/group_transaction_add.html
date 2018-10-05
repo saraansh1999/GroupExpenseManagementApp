@@ -1,0 +1,129 @@
+{% extends 'base3.html' %}
+
+
+{% block content %}
+<br><br><br>
+<h1>NEW TRANSACTION IN GROUP</h1>
+<form action="" method="post">
+	<div class="row container-fluid"><div class="row container-fluid">
+		{{form.hidden_tag()}}
+		<div class="form-group bg-light col-sm-6">
+			{{form.hidden_tag()}}
+			{{form.desc(placeholder="Description",class="form-control")}}
+			
+			{% for error in form.desc.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{{form.tot(placeholder="Amount",class="form-control")}}
+			
+			{% for error in form.tot.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{{form.pay.label}}<br>
+			{% for i in form.pay %}
+			{{i.label}}{{i(onclick="PayDistributerModalOpener(this)")}}<br>
+			{% endfor %}
+			
+			{% for error in form.pay.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{{form.split.label}}<br>
+			{% for j in form.split %}
+			{{j.label}}{{j(OnClick="SplitDistributerModalOpener(this)")}}<br>
+			{% endfor %}
+			
+			{% for error in form.split.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{{form.save(class="btn",value="Save")}}
+		</div>
+	</div>
+</div>
+
+
+<div id="PaySingleModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Select the payer</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+			</div>
+			<div class="modal-body">
+					<div class="row container-fluid">
+						{{form.singlepayer(class='form-control')}}
+					</div>
+			</div>
+
+			<div class="modal-footer">
+				<!-- <button type="button" class="btn" data-dismiss="modal">Settle</button> -->
+				<button type="button" class="btn" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="PayMultipleModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Select the payers</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+			</div>
+			<div class="modal-body">
+					
+						{% for field in form if field.widget.input_type != 'hidden' %}
+						{% if 'paid:' in field.label.text %}
+						{{field.label}} : {{field}}
+						<br>
+						{% endif %}
+						{% endfor %}
+			</div>
+
+			<div class="modal-footer">
+				<!-- <button type="button" class="btn" data-dismiss="modal">Settle</button> -->
+				<button type="button" class="btn" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="SplitUneqModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Select the shares</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+			</div>
+			<div class="modal-body">
+					
+						{% for field in form if field.widget.input_type != 'hidden'%}
+						{% if 'share:' in field.label.text %}
+						{{field.label}} : {{field}}
+						<br>
+						{% endif %}
+						{% endfor %}
+			</div>
+
+			<div class="modal-footer">
+				<!-- <button type="button" class="btn" data-dismiss="modal">Settle</button> -->
+				<button type="button" class="btn" data-dismiss="modal">Close</button>
+			</div></fo
+		</div>
+	</div>
+</div>
+</form>
+{% endblock %}

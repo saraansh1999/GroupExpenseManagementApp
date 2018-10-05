@@ -1,0 +1,19 @@
+{% extends "base3.html" %}
+
+{% block content %}
+<br><br><br>
+<a href="{{ url_for('create_group',username=user.username) }}">Create A New Group</a>
+<h1>my groups</h1>
+<table class="table table-striped">	
+<tr>
+	<th>Name</th>
+	<th>Created On</th>
+</tr>
+{% for g in user.groups %}
+<tr data-url="{{ url_for('disp_group',username=user.username,id=g.id) }}">
+	<td>{{g.name}}</td>
+	<td>{{g.when}}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base2.html" %}
+{% block name%}
+ <h1 class="font-weight-bold text-center" style="color: white"> {{user.username}} </h1>
+ {% endblock %}
+{% block friend %}
+
+<h1 class="font-weight-bold text-center" style="color:#f44336">Personal Details</h1>
+<div class="jumbotron" style="min-height: 450px">
+	<div class='btn-toolbar pull-right'>
+		<div class='btn-group'>
+			<a href="{{url_for('update_profile',username=user.username)}}"><button type='button' class='btn btn-warning font-weight-bold'><span class="fa fa-pencil"></span>Edit</button></a>
+		</div>
+	</div>
+	<div class="font-weight-bold"><h2><span class="fa fa-user"></span> About </h2></div><br><br><br>
+	<div class="row container-fluid">
+		<div class="col-sm-6"> <h4><strong> Name: </strong> {{user.name}} </h4></div>
+		<div class="col-sm-6"> <h4><strong> Gender: </strong> {{user.gender}} </h4></div>
+		<div class="col-sm-6"> <h4><strong> Username: </strong> {{user.username}} </h4></div>
+		<div class="col-sm-6"> <h4><strong> DOB: </strong> {{user.dob}} </h4></div>
+		<div class="col-sm-6"> <h4><strong> Email-ID: </strong> {{user.email}} </h4></div>
+		<div class="col-sm-6"> <h4><strong> City: </strong> {{user.city}} </h4></div>
+		<div class="col-sm-6"> <h4><strong> Phone No.: </strong> {{user.pno}} </h4></div>
+	</div></div>
+	{% endblock %} 

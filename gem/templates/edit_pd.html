@@ -1,0 +1,137 @@
+{% extends "base2.html" %}
+{% block name%}
+<h1 class="font-weight-bold text-center" style="color: white"> {{user.username}} </h1>
+{% endblock %}
+{% block friend %}
+
+<h1 class="font-weight-bold text-center" style="color:#f44336">Edit Profile</h1>
+<div class="font-weight-bold"><h2><span class="fa fa-user"></span> Personal Details </h2></div><br><br><br>
+<form action="" method="post">
+	<div class="row container-fluid">
+		{{form.hidden_tag()}}
+		<div class="form-group bg-light col-sm-6">
+			{{ form.name.label }}
+			{{ form.name(placeholder=user.name,class="form-control")}}
+			{% for error in form.name.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{form.username.label}}
+			{{ form.username(disabled=True,placeholder=user.username+"(unchangeable)",class="form-control")}}
+			{% for error in form.username.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{form.email.label}}
+			{{ form.email(placeholder=user.email,class="form-control")}}
+			{% for error in form.email.errors %}
+			<div class="alert alert-danger" alert-dismissible>
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{form.pno.label}}
+			{{ form.pno(placeholder=user.pno,class="form-control")}}
+			{% for error in form.pno.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{form.city.label}}
+			{% if user.city %}
+			{{ form.city(placeholder=user.city,class="form-control")}}
+			{% else %}
+			{{ form.city(placeholder="City",class="form-control")}}
+			{% endif %}
+			{% for error in form.city.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{ form.gender.label }}
+			{{ form.gender }}
+			{% for error in form.gender.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{form.dob.label}}
+			{% if user.dob %}
+			{{ form.dob(value=user.dob,class="form-control",type='date')}}
+			{% else %}
+			{{ form.dob(class="form-control",type='date')}}
+			{% endif %}
+			{% for error in form.dob.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+		</div>
+		<p class="col-sm-12">{{form.save(class="btn" ,style="background-color:#f44336;color:white" ,value="Save")}}</p>
+	</form>
+	<br>		
+	<hr>
+	<br>
+</div>
+<div class="font-weight-bold"><h2><span class="fa fa-unlock-alt"></span> Change Password </h2></div><br>
+<form action="" method="post">
+	<div class="row container-fluid">
+		{{form2.hidden_tag()}}
+		<div class="form-group bg-light col-sm-12">
+			{{ form2.current_password(placeholder="Current Password",class="form-control")}}
+			{% if val %}
+			{% for error in form2.current_password.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{ form2.new_password(placeholder="New Password",class="form-control")}}
+			{% if val %}
+			{% for error in form2.new_password.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{ form2.confirm_password(placeholder="Confirm Password",class="form-control")}}
+			{% if val %}
+			{% for error in form2.confirm_password.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				Fields are unequal.	
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<p>{{form2.change_password(class="btn" ,style="background-color:#f44336;color:white" ,value="Change Password")}}</p>
+	</form>
+</div>
+<br><br>
+{% endblock %}

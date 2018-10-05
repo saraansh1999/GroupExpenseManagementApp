@@ -1,0 +1,198 @@
+{% extends "base3.html" %}
+{% block content %}
+<br><br><br>
+<div class="container-fluid">
+<h2>Add Friends</h2>
+<form action="" method="post">
+	<div class="row container-fluid">
+		{{form.hidden_tag()}}
+		<div class="form-group bg-light col-sm-6">
+			<!-- {{ form.email.label }} -->
+			{{ form.email(placeholder="enter emailID",class="form-control")}}
+			{% if val == 1 %}
+			{% for error in form.email.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<div class="col-sm-6">{{form.addf(class="btn" ,style="background-color:#f44336;color:white" ,value="Add")}}</div>
+	</div>
+</form>
+</div>
+<div class="container-fluid">
+<h2>List of Friends</h2>
+	<table class="table table-striped">
+		<tr>
+			<th>Name</th>
+			<th>Username</th>
+			<th>Email ID</th>
+			<th>Phone No.</th>
+			<th></th>
+		</tr>
+		{% for f in user.friends.all() %}
+		<tr>
+			<td>{{ f.name }}</td>
+			<td>{{ f.username }}</td>
+			<td>{{ f.email }} <button class="btn" id="transfer" data-email="{{f.email}}"><i class="fa fa-external-link" aria-hidden="true"></i></button></td>
+			<td>{{ f.pno }}	</td>
+			<td><form action="{{url_for('unfriend')}}" method="POST">
+				<button class="btn" type="submit" id="unfriend" data-userdelete="{{f.username}}" name="{{user.username}}"><i class="fa fa-times" aria-hidden="true"></i></button>
+				{{form_unfriend.unfriend_id(id="unfriend_id",style="border:none;border-color:transparent;background-color:transparent")}}
+			</form></td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+<form action="" method="post">
+	<div class="row container-fluid">
+		{{form2.hidden_tag()}}
+		<div class="form-group bg-light col-sm-6">
+			{{ form2.friend.label }}
+			{{ form2.friend(placeholder="enter emailID of friend",id="friend_id",class="form-control")}}
+			{% if val == 2 %}
+			{% for error in form2.friend.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{ form2.money.label }}
+			{{ form2.money(placeholder="enter money",class="form-control")}}
+			{% if val == 2 %}
+			{% for error in form2.money.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<div class="form-group bg-light col-sm-6">
+			{{ form2.direction.label }}
+			<div class="row container-fluid">
+			{% for i in form2.direction %}
+			<div class="col-sm-5"> {{i(Onclick="Show_unequal(this)")}} {{ i.label }}</div>
+			{% endfor %}
+			<div class="col-sm-1">
+				{{form2.temp(id="store_amount",style="border:none;border-color:transparent;background-color:transparent")}}
+			</div>
+			</div>
+			{% if val==2 %}
+			{% for error in form2.direction.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<div class="col-sm-12">{{form2.addt(class="btn" ,style="background-color:#f44336;color:white" ,value="Add",id="bill")}}</div>
+	</div>
+</form>
+<br>
+<div class="container-fluid">
+	<h2>Balance</h2>        
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Action</th>
+				<th>Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for i in user.receive.all() %}
+			<tr data-payer="{{i.payer.username}}" data-receiver="{{user.username}}" data-amount="{{i.balance}}" data-time={{i.timestamp}}>
+				<td>{{i.payer.username}}</td>
+				<td>take</td>
+				<td>{{i.balance}}</td>
+			</tr>
+			{% endfor %}
+			{% for i in user.pay.all() %}
+			<tr data-payer="{{user.username}}"" data-receiver="{{i.receiver.username}}" data-amount="{{i.balance}}" data-time={{i.timestamp}}>
+				<td>{{i.receiver.username}}</td>
+				<td>owe</td>
+				<td>{{i.balance}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+<div id="orderModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="orderDetails">Settle Up</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+			</div>
+			<div class="modal-body">
+				<div class="container">
+					<h2>Payment Options</h2>
+					<p>Choose any of the following: </p>
+					<form>
+						<div class="radio">
+							<label><input type="radio" name="optradio">Net Banking</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="optradio">Credit/Debit Card</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="optradio">UPI</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="optradio">Paytm</label>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div id="orderItems" class="modal-body"></div>
+			<div class="modal-footer">
+				<!-- <button type="button" class="btn" data-dismiss="modal">Settle</button> -->
+				<form action="{{url_for('settle_entry')}}" method="POST" id="settleform">
+					<div class="row container-fluid">
+					 {{form3.Payer(id='a',class="form-control",readonly=True,style="border:none;border-color:transparent;background-color:transparent")}}
+						owes
+					  	{{form3.Receiver(id='b',class="form-control",readonly=True,style="border:none;border-color:transparent;background-color:transparent")}}
+					   	Rs
+						{{form3.Balance(id='c',class="form-control",readonly=True,style="border:none;border-color:transparent;background-color:transparent")}} 
+						{{form3.TimeStamp(id='d',class="form-control",readonly=True,style="border:none;border-color:transparent;background-color:transparent")}}
+					</div>
+					<p>{{form3.SettleUp(class="btn" ,style="background-color:#f44336;color:white" ,value="Settle")}}</p>
+				</form>
+				<button type="button" class="btn" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="Unequal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"> Your Share? </h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>				
+			</div>
+			
+			<div class="modal-body">
+				<form action="" method="POST" id="unequal_form">
+					{{form_unequal.amount(placeholder="Enter Amount",class="form-control",id="unequal_amount")}}
+					<div class="modal-footer">
+					<div>{{form_unequal.submit(class="btn",style="background-color:#f44336;color:white",value="OK",Onclick="submit_another()") }}</div>
+					<div><button type="button" class="btn" data-dismiss="modal" >Close</button></div>
+				</div>
+				</form>
+			</div>
+		</div>
+		
+	</div>
+	
+</div>
+{% endblock %}

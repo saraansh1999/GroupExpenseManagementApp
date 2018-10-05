@@ -1,0 +1,77 @@
+{% extends "base3.html" %}
+
+
+{% block content %}
+
+
+<br><br><br>
+<h1>ADD MEMBER</h1>
+<form action="" method="post">
+	<div class="row container-fluid">
+		{{form_mem.hidden_tag()}}
+		<div class="form-group bg-light col-sm-6">
+			{{ form_mem.email.label }}
+			{{ form_mem.email(placeholder="enter emailID",class="form-control")}}
+			{% if val==2 %}
+			{% for error in form_mem.email.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<div class="col-sm-12">{{form_mem.addf(class="btn" ,style="background-color:#f44336;color:white" ,value="Add")}}</div>
+	</div>
+</form>
+
+<form action="" method="POST">
+	<div class="row container-fluid">
+		{{form_group.hidden_tag()}}
+		<div class="form-group bg-light col-sm-6">
+			{{form_group.name.label}}
+			{{form_group.name(placeholder="enter name",class="form-control")}}
+			{% if val==1 %}
+			{% for error in form_group.name.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{% endif %}
+			{{form_group.desc.label}}
+			{{form_group.desc(placeholder="enter desc",class="form-control")}}
+			{% if val==1 %}
+			{% for error in form_group.desc.errors %}
+			<div class="alert alert-danger alert-dismissible">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{error}}	
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<div class="col-sm-12">{{form_group.save(class="btn" ,style="background-color:#f44336;color:white" ,value="Save")}}</div>
+	</div>
+</form>
+<table class="table table-striped">
+<tr>
+	<th>Name</th>
+	<th>Email</th>
+	<th>Phone No.</th>
+</tr>
+<tr>
+	<td>{{user.name}}</td>
+	<td>{{user.email}}</td>
+	<td>{{user.pno}}</td>
+</tr>
+{% for m in list %}
+{% if m !=	user %}
+<tr>
+	<td>{{m.name}}</td>
+	<td>{{m.email}}</td>
+	<td>{{m.pno}}</td>
+</tr>
+{% endif %}
+{% endfor %}
+</table>
+{% endblock %}
