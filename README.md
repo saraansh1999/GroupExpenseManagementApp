@@ -1,7 +1,7 @@
 # Group Expense Management App
 
 > This is an app for maintaining a record of all the transactions and money sharing between people.
-> In this app the user can keep a record for one person to another person transactions and also transacti````ons in a group.
+> In this app the user can keep a record for one person to another person transactions and also transactions in a group.
 
 
 * This app is coded in python3 using the flask framework.
